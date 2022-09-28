@@ -1,0 +1,23 @@
+version: '2'
+services:
+    crypto-dca-bot:
+        build: 
+            context: ..
+            dockerfile: ./docker/Dockerfile
+        volumes:
+            - ../:/crypto-dca-bot
+        ports:
+            - 8080
+        environment:
+            - ENV=dev
+            - LOG_LEVEL
+            - COLORED_LOG_LEVEL
+            - BINANCE_KEY
+            - BINANCE_SECRET
+            - BINANCE_TESTNET
+            - TWITTER_CONSUMER_KEY
+            - TWITTER_CONSUMER_SECRET
+            - TWITTER_ACCESS_TOKEN
+            - TWITTER_ACCESS_TOKEN_SECRET
+            - TELEGRAM_CHAT_ID
+            - TELEGRAM_TOKEN
