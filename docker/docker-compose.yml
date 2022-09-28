@@ -21,3 +21,4 @@ services:
             - TWITTER_ACCESS_TOKEN_SECRET
             - TELEGRAM_CHAT_ID
             - TELEGRAM_TOKEN
+            - DCA_CONFIG
