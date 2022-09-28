@@ -2,5 +2,6 @@
 
 set -e
 source .env
-cd src
+cd src 
+echo "Running Python App..."
 python3 main.py
