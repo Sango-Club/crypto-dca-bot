@@ -1,15 +1,17 @@
-from telegram.telegram_bot import TelegramBot
-import os
 
-def main():
-    while(True):
-        continue
+import os
+import json
+from dca.dca_bot import DCABot
+
 
 if __name__ == "__main__":
-    telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID")
-    telegram_token = os.getenv("TELEGRAM_TOKEN")
-    bot = TelegramBot(telegram_token, telegram_chat_id)
-    bot.echo_message("DCA Bot is Running!")
-    main()
+    config_file = os.getenv("DCA_CONFIG")
+
+    with open(f"../{config_file}") as f:
+        data = json.load(f)
+
+    bot = DCABot(data)
+    bot.run()
+    
 
 
