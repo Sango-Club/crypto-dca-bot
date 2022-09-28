@@ -24,16 +24,16 @@ class TwitterBot:
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
 
-        self.api = tweepy.API(auth)
+        self.__api = tweepy.API(auth)
 
         try:
-            self.api.verify_credentials()
+            self.__api.verify_credentials()
             self.logger.info("Twitter Authentication OK")
         except:
             self.logger.critical("Error during Twitter Authentication!")
 
     def tweet(self, message):
-        self.api.update_status(message)
+        self.__api.update_status(message)
 
 
 if __name__ == "__main__":

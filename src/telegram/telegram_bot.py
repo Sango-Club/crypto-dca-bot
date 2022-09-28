@@ -13,12 +13,12 @@ class TelegramBot():
         if not telegram_chat_id:
             self.logger.critical("Telegram Chat Id is invalid")
 
-        self.telegram_token = telegram_token
-        self.telegram_chat_id = telegram_chat_id
-        self.base_url = f"https://api.telegram.org/bot{self.telegram_token}"
+        self.__telegram_token = telegram_token
+        self.__telegram_chat_id = telegram_chat_id
+        self.__base_url = f"https://api.telegram.org/bot{self.__telegram_token}"
 
     def echo_message(self, message):
-        uri = f"{self.base_url}/sendMessage?chat_id={self.telegram_chat_id}&text={message}"
+        uri = f"{self.__base_url}/sendMessage?chat_id={self.__telegram_chat_id}&text={message}"
         response = requests.get(uri).json()
         
         if not response["ok"]:
