@@ -1,0 +1,11 @@
+{
+    "orders": 
+    [
+        {
+            "pair": "BTCBUSD",
+            "quantity": 10,
+            "frequency": "* 2 7 * *", /* Runs at 2:00 every 7th of the month */
+            "exchange": "binance" /* binance/ftx/kucoin */
+        }
+    ]
+}
