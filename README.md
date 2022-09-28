@@ -23,7 +23,7 @@ pycron: 3.0.0
 
 ## Roadmap 🌱
 
-[https://github.com/guilyx/crypto-dca-bot/issues/8](See it here)
+See it on Issue https://github.com/guilyx/crypto-dca-bot/issues/8
 
 ## What it does 🔎
 
