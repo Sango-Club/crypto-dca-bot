@@ -6,7 +6,7 @@
 - 🐋 Dockerized
 - 🍻 Actively Maintained
 
-## Description
+## Description 📰
 
 A bot for DCAing cryptocurrencies through Binance/FTX/KuCoin
 
@@ -21,7 +21,7 @@ tweepy: 4.10.1
 pycron: 3.0.0
 ```
 
-## Functions
+## Roadmap 🌱
 
 - Twitter Bot
   - [ ] Tweets Open Orders
@@ -59,7 +59,7 @@ pycron: 3.0.0
 - [ ] Prettify Readme
 - [ ] Deploy on Cloud
 
-## What it does
+## What it does 🔎
 
 Set up your bot by putting regular orders in your configuration file:
 
@@ -87,9 +87,9 @@ Here, the first order should open a spot order for 10 (quantity) BUSD of BTC (pa
 
 You are responsible for filling up your account with the money you want to use with these periodic orders.
 
-## How to Run It
+## How to Run It 📑
 
-### Set it up
+### Set it up 💾
 
 1. Clone the Project: `git clone -b dev https://github.com/guilyx/crypto-dca-bot.git`
 2. Move to the Repository: `cd crypto-dca-bot`
@@ -97,7 +97,7 @@ You are responsible for filling up your account with the money you want to use w
 4. Fill up your API Keys (to do: put helper links)
 5. Create a json file for setting up your orders, specify the name of that json file in your `.env`. The json file must be in the root of the repository.
 
-### Run it
+### Run it 💨
 
 1. Build and Compose the Docker: `docker-compose -f docker/docker-compose.yml up`
 2. Your bot should be running, if you set up a Twitter or Telegram API you should be receiving tweets/messages.
