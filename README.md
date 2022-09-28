@@ -1,10 +1,25 @@
 # Crypto DCA Bot
 
+- ✨ Work in Progress
+- 🖥️ Supported on Ubuntu
+- 🎌 Built with Python
+- 🐋 Dockerized
+- 🍻 Actively Maintained
+
 ## Description
 
 A bot for DCAing cryptocurrencies through Binance/FTX/KuCoin
 
 Note: early bird project, for now exchanges are not implemented.
+
+## Dependencies 🖇️
+
+```yaml
+python-binance: 1.0.16
+coloredlogs: 15.0
+tweepy: 4.10.1
+pycron: 3.0.0
+```
 
 ## Functions
 
@@ -12,10 +27,12 @@ Note: early bird project, for now exchanges are not implemented.
   - [ ] Tweets Open Orders
   - [ ] Tweets Periodic PNL
   - [ ] Tweets Out of Ordinary PNL on open positions
+
 - Telegram Bot
   - [x] Message Open Orders
   - [ ] Message Periodic PNL
   - [ ] Message Out of Ordinary PNL on open positions
+
 - DCA Bot
   - [x] Runs Periodically
   - [x] Reads Order Book
@@ -37,6 +54,10 @@ Note: early bird project, for now exchanges are not implemented.
 - KuCoin API
   - [ ] Open Spot Order
   - [ ] Read Pair Value
+
+- [ ] CI/CD
+- [ ] Prettify Readme
+- [ ] Deploy on Cloud
 
 ## What it does
 
@@ -78,5 +99,13 @@ You are responsible for filling up your account with the money you want to use w
 
 ### Run it
 
-6. Build and Compose the Docker: `docker-compose -f docker/docker-compose.yml up`
-7. Your bot should be running, if you set up a Twitter or Telegram API you should be receiving tweets/messages.
+1. Build and Compose the Docker: `docker-compose -f docker/docker-compose.yml up`
+2. Your bot should be running, if you set up a Twitter or Telegram API you should be receiving tweets/messages.
+
+## Contribute 🆘
+
+Open an issue to state clearly the contribution you want to make. Upon aproval send in a PR with the Issue referenced. (Implement Issue #No / Fix Issue #No).
+
+## Maintainers Ⓜ️
+
+- Erwin Lejeune
