@@ -1,2 +1,3 @@
 .env
 dca-config.json
+*.pyc
