@@ -23,41 +23,7 @@ pycron: 3.0.0
 
 ## Roadmap 🌱
 
-- Twitter Bot
-  - [ ] Tweets Open Orders
-  - [ ] Tweets Periodic PNL
-  - [ ] Tweets Out of Ordinary PNL on open positions
-
-- Telegram Bot
-  - [x] Message Open Orders
-  - [ ] Message Periodic PNL
-  - [ ] Message Out of Ordinary PNL on open positions
-
-- DCA Bot
-  - [x] Runs Periodically
-  - [x] Reads Order Book
-  - [ ] Open Binance Spot Order
-  - [ ] Open FTX Spot Order
-  - [ ] Open KuCoin Spot Order
-  - [ ] Store Open Price in DB
-  - [ ] Get Current Status of Open Positions
-  - [ ] Calculate Global/Local Cumulative/Daily PNL on Stored Positions
-
-- Binance API
-  - [ ] Open Spot Order
-  - [ ] Read Pair Value
-
-- FTX API
-  - [ ] Open Spot Order
-  - [ ] Read Pair Value
-
-- KuCoin API
-  - [ ] Open Spot Order
-  - [ ] Read Pair Value
-
-- [ ] CI/CD
-- [ ] Prettify Readme
-- [ ] Deploy on Cloud
+[https://github.com/guilyx/crypto-dca-bot/issues/8](See it here)
 
 ## What it does 🔎
 
