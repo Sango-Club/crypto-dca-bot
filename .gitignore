@@ -1,3 +1,4 @@
 .env
 dca-config.json
 *.pyc
+gmail-oauth.json
