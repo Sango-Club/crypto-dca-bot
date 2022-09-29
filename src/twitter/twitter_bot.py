@@ -26,19 +26,28 @@ class TwitterBot:
 
         self.__api = tweepy.API(auth)
 
+    def verify_credentials(self):
         try:
             self.__api.verify_credentials()
             self.logger.info("Twitter Authentication OK")
+            return True
         except:
             self.logger.critical("Error during Twitter Authentication!")
+            return False
 
     def tweet(self, message):
-        self.__api.update_status(message)
+        try:
+            self.__api.update_status(message)
+        except:
+            self.logger.critical("Failed to send tweet!")
+            return False
+        
+        return True
 
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description='Echo to Telegram.')
+    parser = argparse.ArgumentParser(description='Echo to Twitter.')
     parser.add_argument('--consumerkey', metavar='ck', type=str, help='consumer key')
     parser.add_argument('--consumersecret', metavar='cs', type=str, help='consumer secret')
     parser.add_argument('--accesstoken', metavar='at', type=str, help='access token')

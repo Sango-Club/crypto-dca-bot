@@ -25,6 +25,9 @@ class TelegramBot():
             self.logger.error(f"Failed to send message: [{message}]\n"
                               f"Error Code: [{response['error_code']}]\n"
                               f"Description: [{response['description']}]")
+            return False
+        
+        return True
 
 if __name__ == "__main__":
     import argparse
