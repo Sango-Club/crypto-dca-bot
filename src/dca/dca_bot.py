@@ -29,11 +29,15 @@ class DCABot:
         gmail_receiver = os.getenv("GMAIL_RECEIVER_ADDRESS")
         gmail_sender = os.getenv("GMAIL_SENDER_ADDRESS")
 
+        discord_token = os.getenv("DISCORD_TOKEN")
+        discord_updates_webhook = os.getenv("DISCORD_UPDATES_WEBHOOK")
+
         self.alerter = Alerter(dca_config["notifications"],
                         gmail_receiver, gmail_sender, gmail_oauth, 
                         telegram_token, telegram_chat_id, twitter_consumer_key, 
                         twitter_consummer_secret, twitter_access_token, 
-                        twitter_access_token_secret)
+                        twitter_access_token_secret,
+                        discord_token, discord_updates_webhook)
         
 
     def __del__(self):
@@ -55,10 +59,12 @@ class DCABot:
         while self.__running:
             if pycron.is_now(order["frequency"]):
                 mutex.acquire()
-                msg = (f"**Order Filled**: \n"
+                msg = (f"------------------\n"
+                    f"**Order Filled**: \n"
                     f"Exchange : {order['exchange']} \n"
                     f"Asset : {order['asset']} \n"
-                    f"Quantity : {order['quantity']} {order['currency']} \n")
+                    f"Quantity : {order['quantity']} {order['currency']} \n"
+                    f"------------------\n")
                 self.alerter.notify(msg)
                 mutex.release()
                 time.sleep(60)

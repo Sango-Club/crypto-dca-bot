@@ -21,7 +21,7 @@ class TwitterBot:
             self.logger.critical("Twitter Access Token Secret is invalid")
 
 
-        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
 
         self.__api = tweepy.API(auth)
@@ -31,18 +31,17 @@ class TwitterBot:
             self.__api.verify_credentials()
             self.logger.info("Twitter Authentication OK")
             return True
-        except:
-            self.logger.critical("Error during Twitter Authentication!")
+        except Exception as e:
+            self.logger.exception(f"Error authentifying to Twitter API: {e}")
             return False
 
     def tweet(self, message):
         try:
             self.__api.update_status(message)
-        except:
-            self.logger.critical("Failed to send tweet!")
+            return True
+        except Exception as e:
+            self.logger.exception(f"Failed to send tweet: {e}")
             return False
-        
-        return True
 
 
 if __name__ == "__main__":
