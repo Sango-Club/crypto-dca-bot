@@ -1,11 +1,32 @@
 {
+    "notifications":
+    {
+        "twitter": false,
+        "telegram": true,
+        "gmail": true
+    },
     "orders": 
     [
         {
-            "pair": "BTCBUSD",
-            "quantity": 10,
+            "asset": "ETH",
+            "currency": "USDT",
+            "quantity": 110.9,
             "frequency": "* 2 7 * *", /* Runs at 2:00 every 7th of the month */
             "exchange": "binance" /* binance/ftx/kucoin */
+        },
+        {
+            "asset": "BTC",
+            "currency": "BUSD",
+            "quantity": 10.8,
+            "frequency": "* * * * *", /* Runs every minute of every day */
+            "exchange": "binance"
+        },
+        {
+            "asset": "BNB",
+            "currency": "BTC",
+            "quantity": 0.00064,
+            "frequency": "* 5 * * SUN", /* Runs every sunday at 5:00 */
+            "exchange": "binance"
         }
     ]
 }
