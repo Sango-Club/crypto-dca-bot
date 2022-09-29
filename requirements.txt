@@ -3,3 +3,6 @@ coloredlogs==15.0
 tweepy==4.10.1
 pycron==3.0.0
 yagmail==0.15.293
+discord.py==2.0.1
+python-dotenv==0.9.1
+discord-webhook==0.17.0

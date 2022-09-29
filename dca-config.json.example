@@ -3,7 +3,8 @@
     {
         "twitter": false,
         "telegram": true,
-        "gmail": true
+        "gmail": true,
+        "discord": false
     },
     "orders": 
     [

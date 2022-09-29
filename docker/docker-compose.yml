@@ -10,6 +10,7 @@ services:
             - 8080
         environment:
             - ENV=dev
+            - TESTING
             - LOG_LEVEL
             - COLORED_LOG_LEVEL
             - BINANCE_KEY
@@ -25,3 +26,6 @@ services:
             - GMAIL_OAUTH_JSON
             - GMAIL_SENDER_ADDRESS
             - GMAIL_RECEIVER_ADDRESS
+            - DISCORD_TOKEN
+            - DISCORD_UPDATES_WEBHOOK
+          
