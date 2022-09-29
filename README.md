@@ -19,6 +19,7 @@ python-binance: 1.0.16
 coloredlogs: 15.0
 tweepy: 4.10.1
 pycron: 3.0.0
+yagmail: 0.15.293
 ```
 
 ## Roadmap 🌱
