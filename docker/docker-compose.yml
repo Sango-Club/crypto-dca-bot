@@ -21,4 +21,7 @@ services:
             - TWITTER_ACCESS_TOKEN_SECRET
             - TELEGRAM_CHAT_ID
             - TELEGRAM_TOKEN
-            - DCA_CONFIG
+            - DCA_CONFIG_JSON
+            - GMAIL_OAUTH_JSON
+            - GMAIL_SENDER_ADDRESS
+            - GMAIL_RECEIVER_ADDRESS
