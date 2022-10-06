@@ -13,7 +13,7 @@ class NexoShopper:
     def _get_available_amount(self, asset: str) -> float:
         balances = self.client.get_account_balances()
 
-        for wb in balances:
+        for wb in balances["balances"]:
             if wb["assetName"] == asset:
                 return float(wb["availableBalance"])
         
@@ -23,12 +23,13 @@ class NexoShopper:
         symbol = f"{order.asset}/{order.currency}"
         price = self._get_price(symbol)
         available_amount = self._get_available_amount(order.currency)
-        amount_to_buy = float(order.quantity)/price
 
         if float(available_amount) <= order.quantity:
             raise BadDCAOrderException(f"Tried to buy {order.quantity}{order.currency} of {order.asset}, but only {available_amount}{order.currency} is available on account.")
         
-        qty_of_asset_to_buy = order.quantity/price
+        qty_of_asset_to_buy = float(order.quantity)/price
+
+        print(f"Requesting to buy {qty_of_asset_to_buy}{order.currency} of {order.asset} at {price}{order.currency} per {order.asset}")
 
         order = self.client.place_order(symbol, "buy", "market", qty_of_asset_to_buy)
         return order

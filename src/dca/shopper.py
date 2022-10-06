@@ -25,6 +25,6 @@ class Shopper:
         
     def order(self, order: Order):
         if order.exchange in self.shoppers:
-            return self.shoppers[order.exchange].order(order)
+            self.shoppers[order.exchange].order(order)
         else:
             raise NotYetImplemented(f"Exchange [{order.exchange}] is not implemented.")
