@@ -54,22 +54,22 @@ class DCABot:
         mutex = Lock()
         self.__running = True
         self.alerter.notify("DCA Bot has started!")
-        for order in self.__dca_config["orders"]:
+        for order in self.orders:
             self.__processes.append(Process(target=self.__run_job_process, args=(order, mutex)))
             self.__processes[-1].start()
 
-    def __run_job_process(self, order, mutex):
+    def __run_job_process(self, order: Order, mutex: Lock):
         while self.__running:
-            if pycron.is_now(order["frequency"]):
+            if pycron.is_now(order.cron):
                 mutex.acquire()
-                
+
                 try:
                     self.shopper.order(order)
                     msg = (f"------------------\n"
                             f"**Order Requested**: \n"
-                            f"Exchange : {order['exchange']} \n"
-                            f"Asset : {order['asset']} \n"
-                            f"Quantity : {order['quantity']} {order['currency']} \n"
+                            f"Exchange : {order.exchange} \n"
+                            f"Asset : {order.asset} \n"
+                            f"Quantity : {order.quantity} {order.currency} \n"
                     f"------------------\n")
                     self.alerter.notify(msg)
                 except Exception as e:
