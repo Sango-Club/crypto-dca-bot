@@ -7,6 +7,7 @@ import sys
 
 from .order import Order
 from .alerter import Alerter
+from .shopper import Shopper
 class DCABot:
     def __init__(self, dca_config: Dict):
         self.__dca_config = dca_config
@@ -39,6 +40,8 @@ class DCABot:
                         twitter_access_token_secret,
                         discord_token, discord_updates_webhook)
         
+        self.shopper = Shopper(self.orders)
+        
 
     def __del__(self):
         self.__running = False
@@ -59,13 +62,19 @@ class DCABot:
         while self.__running:
             if pycron.is_now(order["frequency"]):
                 mutex.acquire()
-                msg = (f"------------------\n"
-                    f"**Order Filled**: \n"
-                    f"Exchange : {order['exchange']} \n"
-                    f"Asset : {order['asset']} \n"
-                    f"Quantity : {order['quantity']} {order['currency']} \n"
+                
+                try:
+                    self.shopper.order(order)
+                    msg = (f"------------------\n"
+                            f"**Order Requested**: \n"
+                            f"Exchange : {order['exchange']} \n"
+                            f"Asset : {order['asset']} \n"
+                            f"Quantity : {order['quantity']} {order['currency']} \n"
                     f"------------------\n")
-                self.alerter.notify(msg)
+                    self.alerter.notify(msg)
+                except Exception as e:
+                    self.alerter.notify(str(e))
+
                 mutex.release()
                 time.sleep(60)
             else:
