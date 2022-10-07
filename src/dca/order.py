@@ -5,9 +5,14 @@ class Order:
         self.__currency = order_dict["currency"]
         self.__cron = order_dict["frequency"]
         self.__quantity = order_dict["quantity"]
+        self.__exchange = order_dict["exchange"]
     
     def __repr__(self):
         return str(self.__dict)
+    
+    @property
+    def exchange(self):
+        return self.__exchange
     
     @property
     def asset(self):

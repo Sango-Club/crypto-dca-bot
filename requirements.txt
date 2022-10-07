@@ -6,3 +6,6 @@ yagmail==0.15.293
 discord.py==2.0.1
 python-dotenv==0.9.1
 discord-webhook==0.17.0
+python-nexo==1.0.1
+python-ftx==0.1.2
+python-kucoin==2.1.3

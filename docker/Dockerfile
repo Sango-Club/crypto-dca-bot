@@ -20,7 +20,7 @@ RUN git clone -b init/bots  https://github.com/guilyx/crypto-dca-bot.git
 WORKDIR /crypto-dca-bot
 
 RUN python3 -m pip install -r requirements.txt
-RUN python3 -m pip install discord-webhook==0.17.0 discord.py==2.0.1 python-dotenv==0.9.1
+RUN python3 -m pip install discord-webhook==0.17.0 discord.py==2.0.1 python-dotenv==0.9.1 python-nexo==1.0.1
 
 COPY docker/entrypoint.sh /.
 

@@ -28,4 +28,6 @@ services:
             - GMAIL_RECEIVER_ADDRESS
             - DISCORD_TOKEN
             - DISCORD_UPDATES_WEBHOOK
+            - NEXO_PUBLIC_KEY
+            - NEXO_SECRET_KEY
           

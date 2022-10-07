@@ -4,11 +4,16 @@ import os
 from multiprocessing import Process, Lock
 import time
 import sys
+import coloredlogs, logging
 
 from .order import Order
 from .alerter import Alerter
+from .shopper import Shopper
 class DCABot:
     def __init__(self, dca_config: Dict):
+        self.logger = logging.getLogger("dca_bot")
+        coloredlogs.install(logger=self.logger)
+        
         self.__dca_config = dca_config
         self.__processes = []
         self.__running = False
@@ -39,6 +44,8 @@ class DCABot:
                         twitter_access_token_secret,
                         discord_token, discord_updates_webhook)
         
+        self.shopper = Shopper(self.orders)
+        
 
     def __del__(self):
         self.__running = False
@@ -51,21 +58,30 @@ class DCABot:
         mutex = Lock()
         self.__running = True
         self.alerter.notify("DCA Bot has started!")
-        for order in self.__dca_config["orders"]:
+        for order in self.orders:
             self.__processes.append(Process(target=self.__run_job_process, args=(order, mutex)))
             self.__processes[-1].start()
 
-    def __run_job_process(self, order, mutex):
+    def __run_job_process(self, order: Order, mutex: Lock):
         while self.__running:
-            if pycron.is_now(order["frequency"]):
+            if pycron.is_now(order.cron):
                 mutex.acquire()
-                msg = (f"------------------\n"
-                    f"**Order Filled**: \n"
-                    f"Exchange : {order['exchange']} \n"
-                    f"Asset : {order['asset']} \n"
-                    f"Quantity : {order['quantity']} {order['currency']} \n"
+
+                try:
+                    msg = (f"------------------\n"
+                            f"**Order Requested**: \n"
+                            f"Exchange : {order.exchange} \n"
+                            f"Asset : {order.asset} \n"
+                            f"Quantity : {order.quantity} {order.currency} \n"
                     f"------------------\n")
-                self.alerter.notify(msg)
+                    self.logger.info(msg)
+                    self.shopper.order(order)
+                    self.alerter.notify(msg)
+                    
+                except Exception as e:
+                    self.logger.error(str(e))
+                    self.alerter.notify(str(e))
+
                 mutex.release()
                 time.sleep(60)
             else:
