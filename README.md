@@ -9,8 +9,8 @@
 <div align="center">
     
 ![lint](https://github.com/guilyx/crypto-dca-bot/workflows/lint/badge.svg?branch=master)
-<!-- [![tests](https://github.com/guilyx/crypto-dca-bot/actions/workflows/tests.yml/badge.svg)](https://github.com/guilyx/crypto-dca-bot/actions/workflows/tests.yml) -->
-<!-- [![codecov](https://codecov.io/gh/guilyx/crypto-dca-bot/branch/master/graph/badge.svg?token=GXUOT9P1WE)](https://codecov.io/gh/guilyx/python-nexo) -->
+[![tests](https://github.com/guilyx/crypto-dca-bot/actions/workflows/tests.yml/badge.svg)](https://github.com/guilyx/crypto-dca-bot/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/guilyx/crypto-dca-bot/branch/master/graph/badge.svg?token=GXUOT9P1WE)](https://codecov.io/gh/guilyx/python-nexo)
 [![CodeFactor](https://www.codefactor.io/repository/github/guilyx/crypto-dca-bot/badge)](https://www.codefactor.io/repository/github/guilyx/python-nexo)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/guilyx/python-nexo.svg)](http://isitmaintained.com/project/guilyx/python-nexo "Percentage of issues still open")
 <!-- ![PipPerMonths](https://img.shields.io/pypi/dm/python-nexo.svg)
