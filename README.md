@@ -28,7 +28,7 @@
 
 ## Description 📰
 
-This project is an automated periodic purchase system for cryptocurrencies at spot price. Set your configuration and decide which asset (ex: ETH) you want to purchase with what currency (ex: BUSD) at a specific period (ex: every day, every tuesday, every first of the month...). You can also set a periodic alerter for PNL status on the specific orders you placed through the app. It'll tell you the PNL of **only** purchases made through the order book you're setting in the configuration file.
+This project is an automated periodic purchase system for cryptocurrencies at spot price. Set your configuration and decide which asset (*ex: ETH*) you want to purchase with what currency (*ex: BUSD*) at a specific period (*ex: every day, every tuesday, every first of the month...*). You can also set a periodic alerter for PNL status on the specific orders you placed through the app. It'll tell you the PNL of **only** purchases made through the order book you're setting in the configuration file.
 
 - ✨ Work in Progress
 - 🖥️ Supported on Ubuntu
