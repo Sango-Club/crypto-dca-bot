@@ -67,19 +67,20 @@ class DCABot:
             if pycron.is_now(order.cron):
                 mutex.acquire()
 
-                #try:
-                msg = (f"------------------\n"
-                        f"**Order Requested**: \n"
-                        f"Exchange : {order.exchange} \n"
-                        f"Asset : {order.asset} \n"
-                        f"Quantity : {order.quantity} {order.currency} \n"
-                f"------------------\n")
-                self.logger.info(msg)
-                self.shopper.order(order)
-                self.alerter.notify(msg)
-                # except Exception as e:
-                #     self.logger.error(str(e))
-                #     self.alerter.notify(str(e))
+                try:
+                    msg = (f"------------------\n"
+                            f"**Order Requested**: \n"
+                            f"Exchange : {order.exchange} \n"
+                            f"Asset : {order.asset} \n"
+                            f"Quantity : {order.quantity} {order.currency} \n"
+                    f"------------------\n")
+                    self.logger.info(msg)
+                    self.shopper.order(order)
+                    self.alerter.notify(msg)
+                    
+                except Exception as e:
+                    self.logger.error(str(e))
+                    self.alerter.notify(str(e))
 
                 mutex.release()
                 time.sleep(60)
