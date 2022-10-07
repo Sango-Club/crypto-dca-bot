@@ -11,10 +11,25 @@ class Alerter:
                  twitter_access_token, twitter_access_token_secret,
                  discord_token, discord_updates_webhook):
 
-        self.twitter = notification_dict["twitter"]
-        self.telegram = notification_dict["telegram"]
-        self.gmail = notification_dict["gmail"]
-        self.discord = notification_dict["discord"]
+        if "twitter" in notification_dict:
+            self.twitter = notification_dict["twitter"]
+        else:
+            self.twitter = False
+        
+        if "telegram" in notification_dict:
+            self.telegram = notification_dict["telegram"]
+        else:
+            self.telegram = False
+
+        if "gmail" in notification_dict:
+            self.gmail = notification_dict["gmail"]
+        else:
+            self.gmail = False
+        
+        if "discord" in notification_dict:
+            self.discord = notification_dict["discord"]
+        else:
+            self.discord = False
 
         if self.gmail:
             self.__gmail_bot = GmailBot(gmail_sender, gmail_receiver, f"../{gmail_oauth}")
