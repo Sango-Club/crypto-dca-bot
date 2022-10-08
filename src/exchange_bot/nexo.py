@@ -1,12 +1,13 @@
 import nexo
 from dca.order import Order
 from utils.exceptions import BadDCAOrderException
-
+from exchange_bot.trade import Trade
 class NexoShopper:
     def __init__(self, api_key, api_secret):
         self.client = nexo.Client(api_key, api_secret)
 
-    def _get_price(self, symbol: str) -> float:
+    def get_price(self, asset: str, currency) -> float:
+        symbol = f"{asset}/{currency}"
         symbol_stats = self.client.get_price_quote(symbol, 1.0, "buy")
         return float(symbol_stats["price"])
     
@@ -27,9 +28,9 @@ class NexoShopper:
         
         return 0.0
 
-    def order(self, order: Order):
+    def order(self, order: Order) -> Trade:
         symbol = f"{order.asset}/{order.currency}"
-        price = self._get_price(symbol)
+        price = self.get_price(order.asset, order.currency)
         available_amount = self._get_available_amount(order.currency)
         min_quote_quantity = self.get_minimum_quote_quantity_for_symbol(symbol)
         max_quote_quantity = self.get_maximum_quote_quantity_for_symbol(symbol)
@@ -50,5 +51,7 @@ class NexoShopper:
         print(f"Requesting to buy {qty_of_asset_to_buy} {order.asset} at {price} {order.currency} per {order.asset} for {order.quantity} {order.currency}")
 
         order = self.client.place_order(symbol, "buy", "market", qty_of_asset_to_buy)
-        return order
+        trade = Trade(order.asset, order.currency, price, qty_of_asset_to_buy, order.quantity, order.exchange)
+
+        return trade
 

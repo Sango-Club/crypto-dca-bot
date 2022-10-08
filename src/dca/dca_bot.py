@@ -45,6 +45,10 @@ class DCABot:
                         discord_token, discord_updates_webhook)
         
         self.shopper = Shopper(self.orders)
+
+        self.collection = {
+            "orders": []
+        }
         
 
     def __del__(self):
@@ -75,7 +79,28 @@ class DCABot:
                             f"Quantity : {order.quantity} {order.currency} \n"
                     f"------------------\n")
                     self.logger.info(msg)
-                    self.shopper.order(order)
+                    trade = self.shopper.order(order)
+                    self.collection["orders"].append(
+                        {
+                            "asset": trade.asset,
+                            "currency": trade.currency,
+                            "amount_of_asset_bought": trade.amount_of_asset_bought,
+                            "price_per_unit": trade.price_per_unit,
+                            "quantity_of_currency_used": trade.quantity_of_currency_used,
+                            "exchange": trade.exchange
+                        }
+                    )
+                    
+                    # TO DO
+                    # Order doesn't mean you filled exactly what you ask
+                    # V1: Assume Order is exactly what was filled
+                    # V2: Order should return an order id. Use that order ID to check order filled.
+                    # Store price of filled orders for PNL
+                    # Store every trade in a collection with N Asset bought for X Quantity
+                    # To calculate a trade's PNL, get current price of asset in currency, simple calculation
+                    # Iterate over all trades to get PNL of each trades and get total PNL
+
+
                     self.alerter.notify(msg)
                     
                 except Exception as e:

@@ -2,6 +2,7 @@ from exchange_bot.binance import BinanceShopper
 from exchange_bot.nexo import NexoShopper
 from utils.exceptions import NotYetImplemented, UnimplementedAndNotPlanned
 from dca.order import Order
+from exchange_bot.trade import Trade
 from typing import List
 import os
 import time
@@ -23,8 +24,14 @@ class Shopper:
             else:
                 raise UnimplementedAndNotPlanned(f"Exchange [{elem.exchange}] is not implemented.")
         
-    def order(self, order: Order):
+    def order(self, order: Order) -> Trade:
         if order.exchange in self.shoppers:
-            self.shoppers[order.exchange].order(order)
+            return(self.shoppers[order.exchange].order(order))
         else:
             raise NotYetImplemented(f"Exchange [{order.exchange}] is not implemented.")
+        
+    def get_price(self, asset: str, currency: str, exchange: str) -> float:
+        if exchange in self.shoppers:
+            return(self.shoppers[exchange].get_price(asset, currency))
+        else:
+            raise NotYetImplemented(f"Exchange [{exchange}] is not implemented.")
