@@ -15,12 +15,16 @@ class DCABot:
         coloredlogs.install(logger=self.logger)
         
         self.__dca_config = dca_config
-        self.__processes = []
-        self.__running = False
+        self.__orders_processes = []
+        self.__orders_running = False
+        self.__pnl_processes = []
+        self.__pnl_running = False
         
         self.orders = []
         for order in dca_config["orders"]:
             self.orders.append(Order(order))
+        
+        self._pnl_frequency_updates = dca_config["notifications"]["pnl_frequency_updates"]
 
         telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID")
         telegram_token = os.getenv("TELEGRAM_TOKEN")
@@ -47,40 +51,76 @@ class DCABot:
         self.shopper = Shopper(self.orders)
 
         self.collection = {
-            "orders": []
+            "trades": []
         }
         
 
     def __del__(self):
-        self.__running = False
-        for p in self.__processes:
+        self.__orders_running = False
+        self.__pnl_running = False
+        for p in self.__orders_processes:
             p.join()
-
-        self.alerter.notify("DCA Bot has stopped!")     
+        
+        for p in self.__pnl_running:
+            p.join()
+        
+        self.alerter.notify("DCA Bot has stopped!")
 
     def run(self):
         mutex = Lock()
-        self.__running = True
+        self.__orders_running = True
         self.alerter.notify("DCA Bot has started!")
         for order in self.orders:
-            self.__processes.append(Process(target=self.__run_job_process, args=(order, mutex)))
+            self.__processes.append(Process(target=self.__run_order_process, args=(order, mutex)))
             self.__processes[-1].start()
+        
+        # Add new processes for daily PNL
+    
+    def __run_pnl_process(self, mutex: Lock):
+        while self.__pnl_running:
+            if pycron.is_now(self._pnl_frequency_updates):
+                mutex.acquire()
+                
+                for trade in self.collection["trades"]:
+                    try:
+                        current_price = self.shopper.get_price(trade.asset, trade.currency, trade.exchange)
+                        new_price_for_order_asset = current_price * trade.amount_of_asset_bought
+                        pnl = new_price_for_order_asset - trade.quantity_of_currency_used
+                        msg = (
+                            f"------------------\n"
+                            f"*** Profit and Losses ***\n"
+                            f"- Order of [{trade.asset}] for [{trade.quantity_of_currency_used} {trade.currency}]\n"
+                            f"- PNL: {pnl:.4f} {trade.currency}"
+                            f"------------------\n"
+                        )
+                        self.logger.info(msg)
+                        self.alerter.notify(msg)
+                    
+                    except Exception as e:
+                        self.logger.error(e)
+                        self.alerter.notify(e)
 
-    def __run_job_process(self, order: Order, mutex: Lock):
-        while self.__running:
+                mutex.release()
+                time.sleep(60)
+            else:
+                time.sleep(20)
+
+    def __run_order_process(self, order: Order, mutex: Lock):
+        while self.__orders_running:
             if pycron.is_now(order.cron):
                 mutex.acquire()
 
                 try:
                     msg = (f"------------------\n"
-                            f"**Order Requested**: \n"
+                            f"*** Order Requested ***: \n"
                             f"Exchange : {order.exchange} \n"
                             f"Asset : {order.asset} \n"
                             f"Quantity : {order.quantity} {order.currency} \n"
                     f"------------------\n")
                     self.logger.info(msg)
                     trade = self.shopper.order(order)
-                    self.collection["orders"].append(
+
+                    self.collection["trades"].append(
                         {
                             "asset": trade.asset,
                             "currency": trade.currency,
