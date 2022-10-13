@@ -17,12 +17,15 @@ class DCABot:
         self.__dca_config = dca_config
         self.__orders_processes = []
         self.__orders_running = False
-        self.__pnl_processes = []
+        self.__pnl_process = None
         self.__pnl_running = False
         
         self.orders = []
+        order_id = 1
         for order in dca_config["orders"]:
             self.orders.append(Order(order))
+            self.orders[-1].set_order_id(order_id)
+            order_id += 1
         
         self._pnl_frequency_updates = dca_config["notifications"]["pnl_frequency_updates"]
 
@@ -61,8 +64,7 @@ class DCABot:
         for p in self.__orders_processes:
             p.join()
         
-        for p in self.__pnl_running:
-            p.join()
+        self.__pnl_process.join()
         
         self.alerter.notify("DCA Bot has stopped!")
 
@@ -71,10 +73,12 @@ class DCABot:
         self.__orders_running = True
         self.alerter.notify("DCA Bot has started!")
         for order in self.orders:
-            self.__processes.append(Process(target=self.__run_order_process, args=(order, mutex)))
-            self.__processes[-1].start()
+            self.__orders_processes.append(Process(target=self.__run_order_process, args=(order, mutex)))
+            self.__orders_processes[-1].start()
         
-        # Add new processes for daily PNL
+        self.__pnl_process = Process(target=self.__run_pnl_process, args=(mutex))
+        self.__pnl_process.start()
+    
     
     def __run_pnl_process(self, mutex: Lock):
         while self.__pnl_running:
@@ -83,14 +87,15 @@ class DCABot:
                 
                 for trade in self.collection["trades"]:
                     try:
-                        current_price = self.shopper.get_price(trade.asset, trade.currency, trade.exchange)
-                        new_price_for_order_asset = current_price * trade.amount_of_asset_bought
-                        pnl = new_price_for_order_asset - trade.quantity_of_currency_used
+                        current_price = self.shopper.get_price(trade['asset'], trade['currency'], trade['exchange'])
+                        new_price_for_order_asset = current_price * trade['amount_of_asset_bought']
+                        pnl = new_price_for_order_asset - trade['quantity_of_currency_used']
+                        
                         msg = (
                             f"------------------\n"
                             f"*** Profit and Losses ***\n"
-                            f"- Order of [{trade.asset}] for [{trade.quantity_of_currency_used} {trade.currency}]\n"
-                            f"- PNL: {pnl:.4f} {trade.currency}"
+                            f"- Order of [{trade['asset']}] for [{trade['quantity_of_currency_used']} {trade['currency']}]\n"
+                            f"- PNL: {pnl:.4f} {trade['currency']}"
                             f"------------------\n"
                         )
                         self.logger.info(msg)
@@ -111,12 +116,14 @@ class DCABot:
                 mutex.acquire()
 
                 try:
-                    msg = (f"------------------\n"
-                            f"*** Order Requested ***: \n"
-                            f"Exchange : {order.exchange} \n"
-                            f"Asset : {order.asset} \n"
-                            f"Quantity : {order.quantity} {order.currency} \n"
-                    f"------------------\n")
+                    msg = (
+                        f"------------------\n"
+                        f"*** Order Requested ***: \n"
+                        f"Exchange : {order.exchange} \n"
+                        f"Asset : {order.asset} \n"
+                        f"Quantity : {order.quantity} {order.currency} \n"
+                        f"------------------\n"
+                    )
                     self.logger.info(msg)
                     trade = self.shopper.order(order)
 

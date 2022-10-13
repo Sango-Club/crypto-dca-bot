@@ -1,6 +1,7 @@
 class Order:
     def __init__(self, order_dict):
         self.__dict = order_dict
+        self.__order_id = None
         self.__asset = order_dict["asset"]
         self.__currency = order_dict["currency"]
         self.__cron = order_dict["frequency"]
@@ -9,6 +10,9 @@ class Order:
     
     def __repr__(self):
         return str(self.__dict)
+    
+    def set_order_id(self, id: int):
+        self.__order_id = id
     
     @property
     def exchange(self):
