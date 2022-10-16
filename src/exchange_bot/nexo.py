@@ -31,6 +31,7 @@ class NexoShopper:
     def order(self, order: Order) -> Trade:
         symbol = f"{order.asset}/{order.currency}"
         price = self.get_price(order.asset, order.currency)
+        price_in_usd = self.get_price(order.currency, "USD")
         available_amount = self._get_available_amount(order.currency)
         min_quote_quantity = self.get_minimum_quote_quantity_for_symbol(symbol)
         max_quote_quantity = self.get_maximum_quote_quantity_for_symbol(symbol)
@@ -51,7 +52,7 @@ class NexoShopper:
         print(f"Requesting to buy {qty_of_asset_to_buy} {order.asset} at {price} {order.currency} per {order.asset} for {order.quantity} {order.currency}")
 
         order = self.client.place_order(symbol, "buy", "market", qty_of_asset_to_buy)
-        trade = Trade(order.asset, order.currency, price, qty_of_asset_to_buy, order.quantity, order.exchange)
+        trade = Trade(order.asset, order.currency, price, qty_of_asset_to_buy, order.quantity, order.quantity*price_in_usd, order.exchange)
 
         return trade
 

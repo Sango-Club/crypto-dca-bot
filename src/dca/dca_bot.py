@@ -7,6 +7,7 @@ import sys
 import coloredlogs, logging
 
 from .order import Order
+from .order_stats import OrderStats
 from .alerter import Alerter
 from .shopper import Shopper
 class DCABot:
@@ -20,11 +21,18 @@ class DCABot:
         self.__pnl_process = None
         self.__pnl_running = False
         
-        self.orders = []
+        self.collection = {
+            "stats": OrderStats(),
+            "trades": {}
+        }
+
+        self.orders = {}
         order_id = 1
+
         for order in dca_config["orders"]:
-            self.orders.append(Order(order))
-            self.orders[-1].set_order_id(order_id)
+            self.orders[order_id] = Order(order)
+            self.collection["trades"][order_id] = []
+            self.orders[order_id].set_order_id(order_id)
             order_id += 1
         
         self._pnl_frequency_updates = dca_config["notifications"]["pnl_frequency_updates"]
@@ -52,10 +60,6 @@ class DCABot:
                         discord_token, discord_updates_webhook)
         
         self.shopper = Shopper(self.orders)
-
-        self.collection = {
-            "trades": []
-        }
         
 
     def __del__(self):
@@ -85,25 +89,65 @@ class DCABot:
             if pycron.is_now(self._pnl_frequency_updates):
                 mutex.acquire()
                 
-                for trade in self.collection["trades"]:
-                    try:
-                        current_price = self.shopper.get_price(trade['asset'], trade['currency'], trade['exchange'])
-                        new_price_for_order_asset = current_price * trade['amount_of_asset_bought']
-                        pnl = new_price_for_order_asset - trade['quantity_of_currency_used']
+                current_value = 0.0
+                total_pnl = 0.0
+
+                for order_id in self.collection["trades"]:
+
+                    order_current_value = 0.0
+                    order_pnl = 0.0
+
+                    for trade in self.collection["trades"][order_id]:
+                        try:
+                            trade_value_usd = self.shopper.get_price(trade['asset'], 'USD', trade['exchange']) * trade['amount_of_asset_bought']
+                            pnl_usd = trade_value_usd - trade['quantity_of_usd_used']
+                            order_current_value += trade_value_usd
+                            order_pnl += pnl_usd
                         
-                        msg = (
-                            f"------------------\n"
-                            f"*** Profit and Losses ***\n"
-                            f"- Order of [{trade['asset']}] for [{trade['quantity_of_currency_used']} {trade['currency']}]\n"
-                            f"- PNL: {pnl:.4f} {trade['currency']}"
-                            f"------------------\n"
-                        )
-                        self.logger.info(msg)
-                        self.alerter.notify(msg)
+                        except Exception as e:
+                            self.logger.error(e)
+                            self.alerter.notify(e)
                     
-                    except Exception as e:
-                        self.logger.error(e)
-                        self.alerter.notify(e)
+                    self.orders[order_id].stats.current_value = order_current_value
+                    self.orders[order_id].stats.pnl = order_pnl
+
+                    current_value += order_current_value
+                    total_pnl += total_pnl
+
+                    self.orders[order_id].stats.delta = (1 - self.orders[order_id].total_spent / order_current_value) * 100
+                    
+                    msg = (
+                                f"------------------\n"
+                                f"*** Profit and Losses ***\n"
+                                f"- Order {order_id} of [{trade['asset']}] for [{trade['quantity_of_currency_used']} {trade['currency']}]\n"
+                                f"- Current Value: {order_current_value} USD\n"
+                                f"- PNL: {order_pnl:.4f} USD\n"
+                                f"- Performance: {self.orders[order_id].stats.delta}%\n"
+                                f"------------------\n"
+                    )
+
+                    self.orders[order_id].stats.timestamp = int(time.time() * 1000)
+
+                    self.logger.info(msg)
+                    self.alerter.notify(msg)
+                
+
+                self.collection["stats"].current_value = current_value
+                self.collection["stats"].pnl = total_pnl
+                self.collection["stats"].delta = (1 - self.collection["stats"].total_spent / self.collection["stats"].current_value) * 100
+                self.collection["stats"].timestamp = int(time.time() * 1000)
+
+                msg = (
+                    f"------------------\n"
+                    f"*** Total Profit and Losses ***\n"
+                    f"- Current Value: {current_value} USD\n"
+                    f"- PNL: {total_pnl:.4f} USD\n"
+                    f"- Performance: {self.collection['stats'].delta}%\n"
+                    f"------------------\n"
+                )
+
+                self.logger.info(msg)
+                self.alerter.notify(msg)
 
                 mutex.release()
                 time.sleep(60)
@@ -126,17 +170,18 @@ class DCABot:
                     )
                     self.logger.info(msg)
                     trade = self.shopper.order(order)
-
-                    self.collection["trades"].append(
-                        {
+                    self.orders[order.order_id].stats.total_spent += trade.quantity_of_usd_used
+                    self.collection["stats"].total_spent += trade.quantity_of_usd_used
+                    
+                    self.collection["trades"][order.order_id].append({
                             "asset": trade.asset,
                             "currency": trade.currency,
                             "amount_of_asset_bought": trade.amount_of_asset_bought,
                             "price_per_unit": trade.price_per_unit,
                             "quantity_of_currency_used": trade.quantity_of_currency_used,
-                            "exchange": trade.exchange
-                        }
-                    )
+                            "quantity_of_usd_used": trade.quantity_of_usd_used,
+                            "exchange": trade.exchange,
+                    })
                     
                     # TO DO
                     # Order doesn't mean you filled exactly what you ask

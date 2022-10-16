@@ -26,7 +26,9 @@ class Shopper:
         
     def order(self, order: Order) -> Trade:
         if order.exchange in self.shoppers:
-            return(self.shoppers[order.exchange].order(order))
+            trade = self.shoppers[order.exchange].order(order)
+            quantity_of_usd_used 
+
         else:
             raise NotYetImplemented(f"Exchange [{order.exchange}] is not implemented.")
         

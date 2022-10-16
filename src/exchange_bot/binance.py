@@ -41,7 +41,8 @@ class BinanceShopper:
     
         price_per_unit = self.get_price(order.asset, order.currency)
         amount_of_asset_bought = order.quantity/price_per_unit
-        trade = Trade(order.asset, order.currency, price_per_unit, amount_of_asset_bought, order.quantity, order.exchange)
+        price_in_usd = self.get_price(order.currency, "USD")
+        trade = Trade(order.asset, order.currency, price_per_unit, amount_of_asset_bought, order.quantity, order.quantity*price_in_usd, order.exchange)
 
         return trade
 
