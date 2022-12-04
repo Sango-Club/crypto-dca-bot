@@ -8,21 +8,21 @@
 
 <div align="center">
     
-![lint](https://github.com/guilyx/crypto-dca-bot/workflows/lint/badge.svg?branch=master)
-[![tests](https://github.com/guilyx/crypto-dca-bot/actions/workflows/tests.yml/badge.svg)](https://github.com/guilyx/crypto-dca-bot/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/guilyx/crypto-dca-bot/branch/master/graph/badge.svg?token=GXUOT9P1WE)](https://codecov.io/gh/guilyx/python-nexo)
-[![CodeFactor](https://www.codefactor.io/repository/github/guilyx/crypto-dca-bot/badge)](https://www.codefactor.io/repository/github/guilyx/python-nexo)
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/guilyx/python-nexo.svg)](http://isitmaintained.com/project/guilyx/python-nexo "Percentage of issues still open")
+![lint](https://github.com/sango-club/crypto-dca-bot/workflows/lint/badge.svg?branch=master)
+[![tests](https://github.com/sango-club/crypto-dca-bot/actions/workflows/tests.yml/badge.svg)](https://github.com/sango-club/crypto-dca-bot/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/sango-club/crypto-dca-bot/branch/master/graph/badge.svg?token=GXUOT9P1WE)](https://codecov.io/gh/sango-club/python-nexo)
+[![CodeFactor](https://www.codefactor.io/repository/github/sango-club/crypto-dca-bot/badge)](https://www.codefactor.io/repository/github/sango-club/python-nexo)
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/sango-club/python-nexo.svg)](http://isitmaintained.com/project/sango-club/python-nexo "Percentage of issues still open")
 <!-- ![PipPerMonths](https://img.shields.io/pypi/dm/python-nexo.svg)
 [![Pip version fury.io](https://badge.fury.io/py/python-nexo.svg)](https://pypi.python.org/pypi/crypto-dca-bot/) -->
-[![GitHub license](https://img.shields.io/github/license/guilyx/python-nexo.svg)](https://github.com/guilyx/crypto-dca-bot/blob/master/LICENSE)
-[![GitHub contributors](https://img.shields.io/github/contributors/guilyx/python-nexo.svg)](https://GitHub.com/guilyx/crypto-dca-bot/graphs/contributors/)
+[![GitHub license](https://img.shields.io/github/license/sango-club/python-nexo.svg)](https://github.com/sango-club/crypto-dca-bot/blob/master/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/sango-club/python-nexo.svg)](https://GitHub.com/sango-club/crypto-dca-bot/graphs/contributors/)
 
 </div>
 
 <div align="center">
     
-[Report Bug](https://github.com/guilyx/crypto-dca-bot/issues) · [Request Feature](https://github.com/guilyx/crypto-dca-bot/issues)
+[Report Bug](https://github.com/sango-club/crypto-dca-bot/issues) · [Request Feature](https://github.com/sango-club/crypto-dca-bot/issues)
 
 </div>
 
@@ -66,7 +66,7 @@ python-kucoin==2.1.3
 
 ## Roadmap 🌱
 
-See it on Issue https://github.com/guilyx/crypto-dca-bot/issues/8
+See it on Issue https://github.com/sango-club/crypto-dca-bot/issues/8
 
 ## What it does 🔎
 
@@ -108,7 +108,7 @@ You are responsible for filling up your account with the currency you want to us
 
 ### Set it up 💾
 
-1. Clone the Project: `git clone https://github.com/guilyx/crypto-dca-bot.git`
+1. Clone the Project: `git clone https://github.com/sango-club/crypto-dca-bot.git`
 2. Move to the Repository: `cd crypto-dca-bot`
 3. Create a copy of `.env.example` and name it `.env`
 4. Fill up your API Keys (to do: put helper links)
