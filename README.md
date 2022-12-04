@@ -10,13 +10,13 @@
     
 ![lint](https://github.com/sango-club/crypto-dca-bot/workflows/lint/badge.svg?branch=master)
 [![tests](https://github.com/sango-club/crypto-dca-bot/actions/workflows/tests.yml/badge.svg)](https://github.com/sango-club/crypto-dca-bot/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/sango-club/crypto-dca-bot/branch/master/graph/badge.svg?token=GXUOT9P1WE)](https://codecov.io/gh/sango-club/python-nexo)
-[![CodeFactor](https://www.codefactor.io/repository/github/sango-club/crypto-dca-bot/badge)](https://www.codefactor.io/repository/github/sango-club/python-nexo)
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/sango-club/python-nexo.svg)](http://isitmaintained.com/project/sango-club/python-nexo "Percentage of issues still open")
-<!-- ![PipPerMonths](https://img.shields.io/pypi/dm/python-nexo.svg)
-[![Pip version fury.io](https://badge.fury.io/py/python-nexo.svg)](https://pypi.python.org/pypi/crypto-dca-bot/) -->
-[![GitHub license](https://img.shields.io/github/license/sango-club/python-nexo.svg)](https://github.com/sango-club/crypto-dca-bot/blob/master/LICENSE)
-[![GitHub contributors](https://img.shields.io/github/contributors/sango-club/python-nexo.svg)](https://GitHub.com/sango-club/crypto-dca-bot/graphs/contributors/)
+[![codecov](https://codecov.io/gh/sango-club/crypto-dca-bot/branch/master/graph/badge.svg?token=GXUOT9P1WE)](https://codecov.io/gh/sango-club/crypto-dca-bot)
+[![CodeFactor](https://www.codefactor.io/repository/github/sango-club/crypto-dca-bot/badge)](https://www.codefactor.io/repository/github/sango-club/crypto-dca-bot)
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/sango-club/crypto-dca-bot.svg)](http://isitmaintained.com/project/sango-club/crypto-dca-bot "Percentage of issues still open")
+<!-- ![PipPerMonths](https://img.shields.io/pypi/dm/crypto-dca-bot.svg)
+[![Pip version fury.io](https://badge.fury.io/py/crypto-dca-bot.svg)](https://pypi.python.org/pypi/crypto-dca-bot/) -->
+[![GitHub license](https://img.shields.io/github/license/sango-club/crypto-dca-bot.svg)](https://github.com/sango-club/crypto-dca-bot/blob/master/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/sango-club/crypto-dca-bot.svg)](https://GitHub.com/sango-club/crypto-dca-bot/graphs/contributors/)
 
 </div>
 
@@ -59,7 +59,7 @@ yagmail==0.15.293
 discord.py==2.0.1
 python-dotenv==0.9.1
 discord-webhook==0.17.0
-python-nexo==1.0.1
+crypto-dca-bot==1.0.1
 python-ftx==0.1.2
 python-kucoin==2.1.3
 ```
