@@ -1,7 +1,8 @@
 import nexo
 from dca.order import Order
 from utils.exceptions import BadDCAOrderException
-from exchange_bot.trade import Trade
+from shops.trade import Trade
+
 class NexoShopper:
     def __init__(self, api_key, api_secret):
         self.client = nexo.Client(api_key, api_secret)
@@ -27,6 +28,8 @@ class NexoShopper:
                 return float(wb["availableBalance"])
         
         return 0.0
+
+    # TO DO: trade update args ordere
 
     def order(self, order: Order) -> Trade:
         symbol = f"{order.asset}/{order.currency}"

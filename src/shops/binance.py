@@ -1,6 +1,6 @@
 import binance
 from dca.order import Order
-from exchange_bot.trade import Trade
+from shops.trade import Trade
 from utils.exceptions import BadDCAOrderException
 
 class BinanceShopper:

@@ -9,6 +9,9 @@ class Trade:
     amount_of_asset_bought: float
     quantity_of_currency_used: float
     quantity_of_usd_used: float
+    exchange: str
+
+    last_update_timestamp: float
     last_pnl: float
     last_delta_percentage: float
-    exchange: str
+    

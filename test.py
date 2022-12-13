@@ -1,4 +1,4 @@
-from src.exchange_bot.binance import BinanceShopper
+from src.shops.binance import BinanceShopper
 from src.dca.order import Order
 
 if __name__ == "__main__":

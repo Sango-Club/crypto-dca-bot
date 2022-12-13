@@ -1,4 +1,18 @@
-from .order_stats import OrderStats
+from dataclasses import dataclass
+import time
+
+@dataclass
+class OrderStats:
+    __order_id: int = -1
+    total_spent: float = 0.0
+    current_value: float = 0.0
+    pnl: float = 0.0
+    delta_percentage: float = 0.0
+    timestamp: int = int(time.time() * 1000)
+
+    @property
+    def order_id(self):
+        return self.__order_id
 
 class Order:
     def __init__(self, order_dict):
@@ -9,7 +23,7 @@ class Order:
         self.__cron = order_dict["frequency"]
         self.__quantity = order_dict["quantity"]
         self.__exchange = order_dict["exchange"]
-        self.stats = OrderStats()
+        self.stats = None
     
     def __repr__(self):
         return str(self.__dict)
@@ -40,3 +54,4 @@ class Order:
     @property
     def cron(self):
         return self.__cron
+
