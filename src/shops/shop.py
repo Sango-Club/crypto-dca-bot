@@ -1,7 +1,13 @@
 from dca.order import Order, OrderStats
 from shops.trade import Trade
 from time import time
+from typing import List
 
+'''
+Base class for all Shops (Binance, KuCoin, Nexo, Mock...)
+    -> Base methods to override
+    -> Public methods available regardless of shop specificity by using overriden methods (PNL related)
+'''
 class Shop:
     def __init__(self):
         self.name = ""
@@ -29,6 +35,14 @@ class Shop:
         raise Exception("This method is a virtual method for base class, please override.")
 
     '''
+    Get the maximum quote quantity for symbol 
+        i.e. for ETHUSD pair, minimum quantity to buy might be 0.01 ETH
+        _get_maximum_quote_quantity_for_symbol('ETHUSDT') -> 199.0113124
+    '''
+    def _get_maximum_quote_quantity_for_symbol(self, asset: str, currency: str) -> float:
+        raise Exception("This method is a virtual method for base class, please override.")
+
+    '''
     Get the available amount on the user's account for the asset
         _get_available_amount('USDT') -> 13942.24
     '''
@@ -52,11 +66,18 @@ class Shop:
     Gets the map of all orders and associated trades
     '''
     @property
-    def get_placed_trades(self):
+    def get_placed_trades(self) -> List[Trade]:
         return self.__placed_trades
 
+    '''
+    Get all trades for a specific order
+    '''
     @property
-    def get_order_stats(self):
+    def get_order_trades(self, order_id: int) -> Trade:
+        return self.__placed_trades[order_id]
+
+    @property
+    def get_order_stats(self) -> List[OrderStats]:
         return self.__order_stats
 
     '''
