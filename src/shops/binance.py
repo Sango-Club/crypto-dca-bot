@@ -1,5 +1,6 @@
 import binance
-from dca.order import Order
+from common.order import Order
+from common.trade import Trade
 from utils.exceptions import BadDCAOrderException
 
 class BinanceShopper:
@@ -19,11 +20,12 @@ class BinanceShopper:
         asset_info = self.client.get_asset_balance(asset=asset, recvWindow=50000)
         return asset_info["free"]
 
-    def _get_price(self, symbol: str) -> str:
+    def get_price(self, asset: str, currency: str) -> str:
+        symbol = f"{asset}{currency}"
         symbol_stats = self.client.get_symbol_ticker(symbol=symbol)
         return symbol_stats["price"]
 
-    def order(self, order: Order):
+    def order(self, order: Order) -> Trade:
         symbol = f"{order.asset}{order.currency}"
         min_quote_quantity = self.get_minimum_quote_quantity_for_symbol(symbol)
         
@@ -36,5 +38,11 @@ class BinanceShopper:
             raise BadDCAOrderException(f"Tried to buy {order.quantity}{order.currency} of {order.asset}, but only {currency_available}{order.currency} is available on account.")
         
         order = self.client.order_market_buy(symbol=symbol, quoteOrderQty=order.quantity, recvWindow=50000)
-        return order
+    
+        price_per_unit = self.get_price(order.asset, order.currency)
+        amount_of_asset_bought = order.quantity/price_per_unit
+        price_in_usd = self.get_price(order.currency, "USD")
+        trade = Trade(order.asset, order.currency, price_per_unit, amount_of_asset_bought, order.quantity, order.quantity*price_in_usd, order.exchange)
+
+        return trade
 

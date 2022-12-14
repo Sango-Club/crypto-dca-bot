@@ -45,7 +45,7 @@ class DiscordBot(discord.Client):
                    "------------------------------------------------------\n"
                    "**!realized-day-pnl** -> returns the realized PNL of the day\n"
                    "------------------------------------------------------\n"
-                   "**!open-order** -> SIKE!\n"
+                   "**!open-order** -> opens a new kek order!\n"
                    "------------------------------------------------------\n")
             await message.channel.send(msg)
         
