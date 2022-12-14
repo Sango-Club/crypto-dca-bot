@@ -1,8 +1,8 @@
 from shops.binance import BinanceShopper
 from shops.nexo import NexoShopper
 from utils.exceptions import NotYetImplemented, UnimplementedAndNotPlanned
-from dca.order import Order
-from shops.trade import Trade
+from common.order import Order
+from common.trade import Trade
 from typing import List
 import os
 import time

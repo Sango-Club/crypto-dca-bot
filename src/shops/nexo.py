@@ -1,7 +1,7 @@
 import nexo
-from dca.order import Order
+from common.order import Order
 from utils.exceptions import BadDCAOrderException
-from shops.trade import Trade
+from common.trade import Trade
 
 class NexoShopper:
     def __init__(self, api_key, api_secret):

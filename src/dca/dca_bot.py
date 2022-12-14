@@ -6,8 +6,7 @@ import time
 import sys
 import coloredlogs, logging
 
-from .order import Order
-from .order_stats import OrderStats
+from common.order import Order, OrderStats
 from .alerter import Alerter
 from .shopper import Shopper
 class DCABot:

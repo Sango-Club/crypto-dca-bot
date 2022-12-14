@@ -1,5 +1,5 @@
 from src.shops.binance import BinanceShopper
-from src.dca.order import Order
+from src.common.order import Order
 
 if __name__ == "__main__":
     import os

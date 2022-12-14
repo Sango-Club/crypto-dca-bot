@@ -17,6 +17,13 @@ parsers:
 ignore:
   - "setup.py"
   - "examples/*"
+  - "src/discord_bot/*"
+  - "src/gmail_bot/*"
+  - "src/telegram_bot/*"
+  - "src/twitter_bot/*"
+  - "src/shops/binance.py"
+  - "src/shops/kucoin.py"
+  - "src/shops/nexo.py"
 
 comment:
   layout: "reach,diff,flags,files,footer"

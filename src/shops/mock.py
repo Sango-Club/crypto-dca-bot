@@ -1,21 +1,23 @@
-from dca.order import Order
+from common.order import Order
 from shops.shop import Shop
-from shops.trade import Trade
+from common.trade import Trade
+from utils.exceptions import BadDCAOrderException
 
 class MockShop(Shop):
     def __init__(self):
 
-        # Dictionary of set prices for predefined pairs, as well as their callable increments
-        # Immutable outside the class
+        # Private dictionary of set prices for predefined pairs, as well as their callable increments
         self.__prices = {
             "ETH/USDT": (1000.0, 100.0),
             "BTC/USDT": (10000.0, 1000.0),
-            "BNB/USDT": (100.0, 10.0)
+            "BNB/USDT": (100.0, 10.0),
+            "ETH/USD": (1001.0, 100.0),
+            "BTC/USD": (10010.0, 1000.0),
+            "BNB/USD": (100.1, 10.0),
+            "USDT/USD": (1.001, 0.0)
         }
 
         self.__available_usdt = 1e6
-
-    ## TO DO: what if pair isn't supported by mock
 
     '''
     Overriden virtual methods
@@ -26,6 +28,11 @@ class MockShop(Shop):
         _get_price('ETHUSDT') -> 1232.435
     '''
     def _get_price(self, asset: str, currency: str) -> float:
+        pair = self.__asset_to_pair(asset, currency)
+
+        if pair not in self.__prices:
+            raise Exception("Asset not supported by Mock Shop") # maybe handle it and just don't do the trade btw
+
         return self.__prices[self.__asset_to_pair(asset, currency)][0]
 
     '''
@@ -63,7 +70,7 @@ class MockShop(Shop):
         _get_available_amount('USDT') -> 13942.24
     '''
     def _get_available_amount(self, asset: str) -> float:
-        return float("inf") # should be dependent on waht you spent
+        return self.__available_usdt
 
     '''
     Public Methods
@@ -90,16 +97,13 @@ class MockShop(Shop):
     '''
     Takes a Order from the JSON file and places the order. Returns the Traded Order.
     '''
-    def order(self, order: Order) -> Trade:
+    def _order(self, order: Order) -> Trade:
         price = self._get_price(order.asset, order.currency)
-        price = self.get_price(order.asset, order.currency)
-        price_in_usd = self.get_price(order.currency, "USD")
+        price_in_usd = self._get_price(order.currency, "USD")
         available_amount = self._get_available_amount(order.currency)
-        min_quote_quantity = self.get_minimum_quote_quantity_for_symbol(symbol)
-        max_quote_quantity = self.get_maximum_quote_quantity_for_symbol(symbol)
+        min_quote_quantity = self._get_minimum_quote_quantity_for_symbol(order.asset, order.currency)
+        max_quote_quantity = self._get_maximum_quote_quantity_for_symbol(order.asset, order.currency)
 
-        print(min_quote_quantity)
-        print(max_quote_quantity)
         qty_of_asset_to_buy = float(order.quantity)/price
 
         if float(min_quote_quantity) > qty_of_asset_to_buy:
@@ -113,7 +117,9 @@ class MockShop(Shop):
 
         print(f"Requesting to buy {qty_of_asset_to_buy} {order.asset} at {price} {order.currency} per {order.asset} for {order.quantity} {order.currency}")
 
-
+        self.__available_usdt -= order.quantity
+        
+        return Trade(order.order_id, order.asset, order.currency, price, qty_of_asset_to_buy, order.quantity, order.quantity*price_in_usd, "mock")
 
     '''
     Private Methods
